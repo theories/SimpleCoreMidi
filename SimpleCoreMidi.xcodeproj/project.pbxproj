@@ -14,6 +14,11 @@
 		E4B643041B8370B500A1E76D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4B643031B8370B500A1E76D /* Images.xcassets */; };
 		E4B643071B8370B500A1E76D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4B643051B8370B500A1E76D /* LaunchScreen.xib */; };
 		E4B643131B8370B500A1E76D /* SimpleCoreMidiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B643121B8370B500A1E76D /* SimpleCoreMidiTests.m */; };
+		E4B6431D1B8371B000A1E76D /* MidiEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B6431C1B8371B000A1E76D /* MidiEngine.m */; };
+		E4B6431E1B8371B000A1E76D /* MidiEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B6431C1B8371B000A1E76D /* MidiEngine.m */; };
+		E4B643201B83720800A1E76D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B6431F1B83720800A1E76D /* AudioToolbox.framework */; };
+		E4B643241B83724E00A1E76D /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B643231B83724E00A1E76D /* CoreAudio.framework */; };
+		E4B643261B83725A00A1E76D /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B643251B83725A00A1E76D /* CoreMIDI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +45,11 @@
 		E4B6430C1B8370B500A1E76D /* SimpleCoreMidiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleCoreMidiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B643111B8370B500A1E76D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4B643121B8370B500A1E76D /* SimpleCoreMidiTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimpleCoreMidiTests.m; sourceTree = "<group>"; };
+		E4B6431C1B8371B000A1E76D /* MidiEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MidiEngine.m; sourceTree = "<group>"; };
+		E4B6431F1B83720800A1E76D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		E4B643231B83724E00A1E76D /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		E4B643251B83725A00A1E76D /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
+		E4B643271B8372CC00A1E76D /* MidiEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MidiEngine.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +57,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4B643261B83725A00A1E76D /* CoreMIDI.framework in Frameworks */,
+				E4B643241B83724E00A1E76D /* CoreAudio.framework in Frameworks */,
+				E4B643201B83720800A1E76D /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +76,9 @@
 		E4B642EA1B8370B500A1E76D = {
 			isa = PBXGroup;
 			children = (
+				E4B643251B83725A00A1E76D /* CoreMIDI.framework */,
+				E4B643231B83724E00A1E76D /* CoreAudio.framework */,
+				E4B6431F1B83720800A1E76D /* AudioToolbox.framework */,
 				E4B642F51B8370B500A1E76D /* SimpleCoreMidi */,
 				E4B6430F1B8370B500A1E76D /* SimpleCoreMidiTests */,
 				E4B642F41B8370B500A1E76D /* Products */,
@@ -81,6 +97,7 @@
 		E4B642F51B8370B500A1E76D /* SimpleCoreMidi */ = {
 			isa = PBXGroup;
 			children = (
+				E4B6431C1B8371B000A1E76D /* MidiEngine.m */,
 				E4B642FA1B8370B500A1E76D /* AppDelegate.h */,
 				E4B642FB1B8370B500A1E76D /* AppDelegate.m */,
 				E4B642FD1B8370B500A1E76D /* ViewController.h */,
@@ -89,6 +106,7 @@
 				E4B643031B8370B500A1E76D /* Images.xcassets */,
 				E4B643051B8370B500A1E76D /* LaunchScreen.xib */,
 				E4B642F61B8370B500A1E76D /* Supporting Files */,
+				E4B643271B8372CC00A1E76D /* MidiEngine.h */,
 			);
 			path = SimpleCoreMidi;
 			sourceTree = "<group>";
@@ -219,6 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4B6431D1B8371B000A1E76D /* MidiEngine.m in Sources */,
 				E4B642FF1B8370B500A1E76D /* ViewController.m in Sources */,
 				E4B642FC1B8370B500A1E76D /* AppDelegate.m in Sources */,
 				E4B642F91B8370B500A1E76D /* main.m in Sources */,
@@ -229,6 +248,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4B6431E1B8371B000A1E76D /* MidiEngine.m in Sources */,
 				E4B643131B8370B500A1E76D /* SimpleCoreMidiTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
