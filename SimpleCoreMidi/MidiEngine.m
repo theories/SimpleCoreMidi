@@ -210,4 +210,13 @@
  
 */
 
+#pragma mark useful links
+
+/*!
+
+ http://www.deluge.co/?q=midi-driven-animation-core-audio-objective-c
+ 
+*/
+
+
 
