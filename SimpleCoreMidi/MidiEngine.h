@@ -29,6 +29,11 @@
 
 @interface MidiEngine : NSObject
 
+@property (readwrite) AUGraph   processingGraph;
+@property (readwrite) AudioUnit samplerUnit;
+@property (readwrite) AudioUnit ioUnit;
+@property (readwrite) Float64   graphSampleRate;
+
 @property (weak) id<MidiEngineDelegate> delegate;
 
 - (void)handleInterruption:(NSNotification *)notification;

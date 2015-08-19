@@ -19,6 +19,12 @@
 
 @implementation MidiEngine
 
+@synthesize processingGraph     = _processingGraph;
+@synthesize samplerUnit         = _samplerUnit;
+@synthesize ioUnit              = _ioUnit;
+@synthesize graphSampleRate     = _graphSampleRate;
+
+
 
 - (instancetype)init
 {
@@ -27,11 +33,17 @@
         if(![self initAVAudioSession]){
             return nil;
         }
+        
+        if(![self createAUGraph]){
+            return nil;
+        }
+        
     }
     
+        
     return self;
     
-    
+
 }
 
 
@@ -54,8 +66,11 @@
         return NO;
     }
     
-    double hwSampleRate = 44100.0;
-    success = [sessionInstance setPreferredSampleRate:hwSampleRate error:&error];
+    //double hwSampleRate = 44100.0;
+    // Request a desired hardware sample rate.
+    self.graphSampleRate = 44100.0;    // Hertz
+    
+    success = [sessionInstance setPreferredSampleRate:self.graphSampleRate error:&error];
     if (!success){ NSLog(@"Error setting preferred sample rate! %@\n", [error localizedDescription]);
         return NO;
     }
@@ -92,7 +107,83 @@
         return NO;
     }
     
+    self.graphSampleRate = [sessionInstance sampleRate];
+    
     return YES;
+}
+
+
+//create an audio processing graph
+- (BOOL) createAUGraph {
+    
+    OSStatus result = noErr;
+    AUNode samplerNode, ioNode;
+    
+    //common audio component description object
+    AudioComponentDescription cd = {};
+    cd.componentManufacturer    = kAudioUnitManufacturer_Apple;
+    cd.componentFlags           = 0;
+    cd.componentFlagsMask       = 0;
+    
+    //sampler
+    cd.componentType            = kAudioUnitType_MusicDevice;
+    cd.componentSubType         = kAudioUnitSubType_Sampler;
+    
+    //Instantiate Audio processing graph
+    result = NewAUGraph(&_processingGraph);
+    if(result != noErr){
+        NSLog(@"Could not create AUGraph!");
+        return NO;
+    }
+    
+    //add sampler unit node to the graph
+    result = AUGraphAddNode(self.processingGraph, &cd, &samplerNode);
+    if(result != noErr){
+        NSLog(@"Could not add sampler node to graph!");
+        return NO;
+    }
+    
+    //output unit
+    //configuration first
+    cd.componentType = kAudioUnitType_Output;
+    cd.componentSubType = kAudioUnitSubType_RemoteIO;
+    
+    result = AUGraphAddNode(self.processingGraph, &cd, &ioNode);
+    if(result != noErr){
+        NSLog(@"Could not add output node to graph!");
+        return NO;
+    }
+    
+    //open the graph
+    result = AUGraphOpen(self.processingGraph);
+    if(result != noErr){
+        NSLog(@"Could not open graph!");
+        return NO;
+    }
+    
+    //connect the sampler node to the output node
+    result = AUGraphConnectNodeInput(self.processingGraph, samplerNode, 0, ioNode, 0);
+    if(result != noErr){
+        NSLog(@"Could not connect sampler node to output node!");
+        return NO;
+    }
+    
+    //capture reference to sampler unit from its node
+    result = AUGraphNodeInfo(self.processingGraph, samplerNode, 0, &_samplerUnit);
+    if(result != noErr){
+        NSLog(@"Could not capture reference to sampler unit from its node!");
+        return NO;
+    }
+    
+    result = AUGraphNodeInfo(self.processingGraph, ioNode, 0, &_ioUnit);
+    if(result != noErr){
+        NSLog(@"Could not capture reference to output unit from its node!");
+        return NO;
+    }
+    
+    
+    return YES;
+    
 }
 
 
@@ -184,6 +275,7 @@
     
     
 }
+
 
 
 @end
