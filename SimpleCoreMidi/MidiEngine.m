@@ -38,6 +38,27 @@
             return nil;
         }
         
+        
+        //Configure AUGraph
+        if(![self configureAUGraph: self.processingGraph]){
+            NSLog(@"Error configuring AUGraph");
+            return nil;
+        }
+        
+        
+        
+        //Initialize Audio Processing Graph
+        //Start Audio Processing Graph
+        if(![self activateGraph: self.processingGraph]){
+            NSLog(@"Error initializing AUGraph");
+            return nil;
+            
+        }
+        
+        
+        CAShow(self.processingGraph);
+        
+        
     }
     
         
@@ -184,6 +205,76 @@
     
     return YES;
     
+}
+
+
+
+- (BOOL) configureAUGraph: (AUGraph) graph{
+    
+    OSStatus result = noErr;
+    UInt32 framesPerSlice = 0;
+    UInt32 framesPerSlicePropertySize = sizeof (framesPerSlice);
+    UInt32 sampleRatePropertySize = sizeof (self.graphSampleRate);
+    
+    // Initialize Audio Units
+    
+    //ioUnit first
+    result = AudioUnitInitialize(self.ioUnit);
+    if(result != noErr){
+        NSLog(@"Could not initialize ioUnit! Error code: %d '%.4s'", (int) result, (const char *)&result);
+        return NO;
+    }
+    
+    //set the output unit's output sample rate to value of graphSampleRate
+    result = AudioUnitSetProperty(self.ioUnit, kAudioUnitProperty_SampleRate, kAudioUnitScope_Output, 0, &_graphSampleRate, sampleRatePropertySize);
+    if(result != noErr){
+        NSLog(@"Could not set ioUnit Sample Rate to %f!  Error code: %d '%.4s'", self.graphSampleRate, (int) result, (const char *)&result);
+        return NO;
+    }
+    
+    //retrieve the value of maximum frames per slice from the output unit
+    result = AudioUnitGetProperty(self.ioUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &framesPerSlice, &framesPerSlicePropertySize);
+    if(result != noErr){
+        NSLog(@"Could not retrieve value of max frame per slice from output unit! Error code: %d '%.4s'", (int) result, (const char *)&result);
+        return NO;
+    }
+    
+    
+    //set the sampler unit's output sample rate property
+    result = AudioUnitSetProperty(self.samplerUnit, kAudioUnitProperty_SampleRate, kAudioUnitScope_Output, 0, &_graphSampleRate, sampleRatePropertySize);
+    if(result != noErr){
+        NSLog(@"Could not set output sample rate on sampler unit! Error code: %d '%.4s'", (int) result, (const char *)&result);
+        return NO;
+    }
+    
+    //set the sampler unit's max frames per slice property
+    result = AudioUnitSetProperty(self.samplerUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &framesPerSlice, framesPerSlicePropertySize);
+    if(result != noErr){
+        NSLog(@"Could not set max frames per slice on sampler unit! Error code: %d '%.4s'", (int) result, (const char *)&result);
+        return NO;
+    }
+    
+    return YES;
+}
+
+
+- (BOOL) activateGraph: (AUGraph) graph{
+    
+    OSStatus result = noErr;
+    
+    result = AUGraphInitialize(graph);
+    if(result != noErr){
+        NSLog(@"Could not initialize AUGraph! Error code: %d '%.4s'", (int) result, (const char *)&result);
+        return NO;
+    }
+    
+    result = AUGraphStart(graph);
+    if(result != noErr){
+        NSLog(@"Could not start AUGraph! Error code: %d '%.4s'", (int) result, (const char *)&result);
+        return NO;
+    }
+    
+    return YES;
 }
 
 

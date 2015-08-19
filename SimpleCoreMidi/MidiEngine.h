@@ -19,6 +19,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 @protocol MidiEngineDelegate <NSObject>
+
 @optional
 - (void)engineWasInterrupted;
 - (void)engineConfigurationHasChanged;
@@ -35,6 +36,7 @@
 @property (readwrite) Float64   graphSampleRate;
 
 @property (weak) id<MidiEngineDelegate> delegate;
+
 
 - (void)handleInterruption:(NSNotification *)notification;
 - (void)handleRouteChange:(NSNotification *)notification;

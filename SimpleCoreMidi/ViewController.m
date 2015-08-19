@@ -10,9 +10,10 @@
 @class MidiEngine;
 
 
-@interface ViewController ()
+@interface ViewController () <MidiEngineDelegate>
 
 @end
+
 
 @implementation ViewController
 
@@ -21,6 +22,8 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     _midiEngine = [[MidiEngine alloc] init];
+    _midiEngine.delegate = self;
+    
     if(_midiEngine == nil){
         NSLog(@"Failed to initialize midi engine");
     }
