@@ -11,3 +11,26 @@
 
 
 #endif
+
+
+#import <Foundation/Foundation.h>
+#import <AudioToolbox/MusicPlayer.h>
+#import <CoreAudio/CoreAudioTypes.h>
+#import <AVFoundation/AVFoundation.h>
+
+@protocol MidiEngineDelegate <NSObject>
+@optional
+
+//- (void)engineWasInterrupted;
+//- (void)engineConfigurationHasChanged;
+//- (void)mixerOutputFilePlayerHasStopped;
+
+@end
+
+@interface MidiEngine : NSObject
+
+@property (weak) id<MidiEngineDelegate> delegate;
+
+
+@end
+

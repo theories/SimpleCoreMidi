@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MidiEngine.h"
 
-@interface ViewController : UIViewController
+@class MidiEngine;
 
+@interface ViewController : UIViewController{
+    MidiEngine *_midiEngine;
+}
 
 @end
 
