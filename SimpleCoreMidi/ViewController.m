@@ -21,6 +21,9 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     _midiEngine = [[MidiEngine alloc] init];
+    if(_midiEngine == nil){
+        NSLog(@"Failed to initialize midi engine");
+    }
     
 }
 

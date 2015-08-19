@@ -186,6 +186,7 @@
 				TargetAttributes = {
 					E4B642F21B8370B500A1E76D = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = JNR6JL3MR6;
 					};
 					E4B6430B1B8370B500A1E76D = {
 						CreatedOnToolsVersion = 6.4;
@@ -369,6 +370,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SimpleCoreMidi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -379,6 +381,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SimpleCoreMidi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -438,6 +441,7 @@
 				E4B643181B8370B500A1E76D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E4B643191B8370B500A1E76D /* Build configuration list for PBXNativeTarget "SimpleCoreMidiTests" */ = {
 			isa = XCConfigurationList;
@@ -446,6 +450,7 @@
 				E4B6431B1B8370B500A1E76D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

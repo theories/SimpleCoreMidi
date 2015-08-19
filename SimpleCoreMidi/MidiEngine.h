@@ -20,17 +20,20 @@
 
 @protocol MidiEngineDelegate <NSObject>
 @optional
-
-//- (void)engineWasInterrupted;
-//- (void)engineConfigurationHasChanged;
-//- (void)mixerOutputFilePlayerHasStopped;
+- (void)engineWasInterrupted;
+- (void)engineConfigurationHasChanged;
+- (void)mixerOutputFilePlayerHasStopped;
 
 @end
+
 
 @interface MidiEngine : NSObject
 
 @property (weak) id<MidiEngineDelegate> delegate;
 
+- (void)handleInterruption:(NSNotification *)notification;
+- (void)handleRouteChange:(NSNotification *)notification;
+- (void)handleMediaServicesReset:(NSNotification *)notification;
 
 @end
 
