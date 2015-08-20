@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E4768C531B865B3100879B8E /* Yamaha_XG_Sound_Set.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = E4768C521B865B3100879B8E /* Yamaha_XG_Sound_Set.sf2 */; };
 		E4B642F91B8370B500A1E76D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B642F81B8370B500A1E76D /* main.m */; };
 		E4B642FC1B8370B500A1E76D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B642FB1B8370B500A1E76D /* AppDelegate.m */; };
 		E4B642FF1B8370B500A1E76D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B642FE1B8370B500A1E76D /* ViewController.m */; };
@@ -32,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E46E972A1B855CB0003349FB /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		E4768C521B865B3100879B8E /* Yamaha_XG_Sound_Set.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = Yamaha_XG_Sound_Set.sf2; path = sound/Yamaha_XG_Sound_Set.sf2; sourceTree = "<group>"; };
 		E4B642F31B8370B500A1E76D /* SimpleCoreMidi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleCoreMidi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B642F71B8370B500A1E76D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4B642F81B8370B500A1E76D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -73,9 +76,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E46E972C1B855EF1003349FB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E4768C521B865B3100879B8E /* Yamaha_XG_Sound_Set.sf2 */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		E4B642EA1B8370B500A1E76D = {
 			isa = PBXGroup;
 			children = (
+				E46E972A1B855CB0003349FB /* AudioUnit.framework */,
 				E4B643251B83725A00A1E76D /* CoreMIDI.framework */,
 				E4B643231B83724E00A1E76D /* CoreAudio.framework */,
 				E4B6431F1B83720800A1E76D /* AudioToolbox.framework */,
@@ -97,6 +109,7 @@
 		E4B642F51B8370B500A1E76D /* SimpleCoreMidi */ = {
 			isa = PBXGroup;
 			children = (
+				E46E972C1B855EF1003349FB /* Supporting Files */,
 				E4B6431C1B8371B000A1E76D /* MidiEngine.m */,
 				E4B642FA1B8370B500A1E76D /* AppDelegate.h */,
 				E4B642FB1B8370B500A1E76D /* AppDelegate.m */,
@@ -219,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4B643021B8370B500A1E76D /* Main.storyboard in Resources */,
+				E4768C531B865B3100879B8E /* Yamaha_XG_Sound_Set.sf2 in Resources */,
 				E4B643071B8370B500A1E76D /* LaunchScreen.xib in Resources */,
 				E4B643041B8370B500A1E76D /* Images.xcassets in Resources */,
 			);

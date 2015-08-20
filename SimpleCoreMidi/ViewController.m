@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-@class MidiEngine;
 
 
 @interface ViewController () <MidiEngineDelegate>

@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MidiEngine.h"
 
-@class MidiEngine;
 
 @interface ViewController : UIViewController{
     MidiEngine *_midiEngine;
