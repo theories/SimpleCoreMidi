@@ -213,9 +213,18 @@
 - (BOOL) configureAUGraph: (AUGraph) graph{
     
     OSStatus result = noErr;
+    
+    
+    /*
+     Apparently, it's unnecessary to set the sampleRate and Frames
+     for the ioUnit and samplerUnit.
+     Removing for now...
+     */
+    /*
     UInt32 framesPerSlice = 0;
     UInt32 framesPerSlicePropertySize = sizeof (framesPerSlice);
     UInt32 sampleRatePropertySize = sizeof (self.graphSampleRate);
+    */
     
     // Initialize Audio Units
     
@@ -226,6 +235,16 @@
         return NO;
     }
     
+    
+    
+    /*
+     Apparently, it's unnecessary to set the sampleRate and Frames
+     for the ioUnit and samplerUnit.
+     Removing for now...
+     */
+    
+    /*
+     
     //set the output unit's output sample rate to value of graphSampleRate
     result = AudioUnitSetProperty(self.ioUnit, kAudioUnitProperty_SampleRate, kAudioUnitScope_Output, 0, &_graphSampleRate, sampleRatePropertySize);
     if(result != noErr){
@@ -241,6 +260,16 @@
     }
     
     
+    */
+    
+    result = AudioUnitInitialize(self.samplerUnit);
+    if(result != noErr){
+        NSLog(@"Could not initialize samplerUnit! Error code: %d '%.4s'", (int) result, (const char *)&result);
+        return NO;
+    }
+    
+    
+    /*
     //set the sampler unit's output sample rate property
     result = AudioUnitSetProperty(self.samplerUnit, kAudioUnitProperty_SampleRate, kAudioUnitScope_Output, 0, &_graphSampleRate, sampleRatePropertySize);
     if(result != noErr){
@@ -254,6 +283,7 @@
         NSLog(@"Could not set max frames per slice on sampler unit! Error code: %d '%.4s'", (int) result, (const char *)&result);
         return NO;
     }
+     */
     
     return YES;
 }
