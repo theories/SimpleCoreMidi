@@ -8,6 +8,8 @@
 
 #import "MidiEngine.h"
 
+
+
 @interface MidiEngine() {
     
 }
@@ -19,10 +21,15 @@
 
 @implementation MidiEngine
 
+
+MusicSequence       _musicSequence;
+MusicPlayer         _musicPlayer;
+
 @synthesize processingGraph     = _processingGraph;
 @synthesize samplerUnit         = _samplerUnit;
 @synthesize ioUnit              = _ioUnit;
 @synthesize graphSampleRate     = _graphSampleRate;
+
 
 
 
@@ -58,7 +65,17 @@
         
         CAShow(self.processingGraph);
         
-        [self loadSoundBank];
+        if(![self createMusicSequence]){
+            NSLog(@"Error creating Music Sequence!");
+            return nil;
+        }
+        
+        if(![self loadSoundBank]){
+            NSLog(@"Error creating Music Player!");
+            return nil;
+        }
+        
+        [self playSequence];
         
     }
     
@@ -309,6 +326,86 @@
 }
 
 
+- (BOOL)createMusicSequence{
+    
+    //from
+    //http://www.deluge.co/?q=midi-driven-animation-core-audio-objective-c
+    
+    NSURL *midiFileURL;
+    @try {
+        midiFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Bee_Gees_-_Jive_Talkin'" ofType:@"mid"]];
+    }
+    @catch (NSException *exception) {
+        /*
+         Handle an exception thrown in the @try block
+         */
+        NSLog(@"Exception thrown loading midi file %@", [exception reason]);
+        return NO;
+    }
+    @finally {
+        /*
+         Code that gets executed whether or not an exception is thrown
+         */
+    }
+    
+    
+    NewMusicSequence(&(_musicSequence));
+    
+    OSStatus status = MusicSequenceFileLoad(_musicSequence, (__bridge CFURLRef)(midiFileURL), kMusicSequenceFile_MIDIType, kMusicSequenceLoadSMF_ChannelsToTracks);
+    
+    
+    NSLog(@"Sequence load status: %d", (int)status);
+    if(status != noErr){
+        NSLog(@"Could not load midi file!");
+        return NO;
+    }
+    
+    MusicSequenceSetAUGraph(_musicSequence, self.processingGraph);
+
+    
+    /*
+     
+     // Create a new music player
+     MusicPlayer  p;
+     // Initialise the music player
+     NewMusicPlayer(&p);
+     
+     // Load the sequence into the music player
+     MusicPlayerSetSequence(p, _musicSequence);
+     // Called to do some MusicPlayer setup. This just
+     // reduces latency when MusicPlayerStart is called
+     MusicPlayerPreroll(p);
+     // Starts the music playing
+     MusicPlayerStart(p);
+     
+     
+     */
+    
+    return YES;
+    
+}
+
+- (void)playSequence{
+    
+    if(!_musicPlayer){
+        NewMusicPlayer(&(_musicPlayer));
+        
+    }
+    
+    if(_musicSequence){
+        MusicPlayerSetSequence(_musicPlayer, _musicSequence);
+    }
+    
+    Boolean isPlaying;
+    MusicPlayerIsPlaying(_musicPlayer, &isPlaying);
+    if(!isPlaying){
+        MusicPlayerPreroll(_musicPlayer);
+        MusicPlayerStart(_musicPlayer);
+    }
+    
+}
+
+
 
 - (BOOL) loadSoundBank{
     
@@ -327,6 +424,8 @@
     
     return YES;
 }
+
+
 
 - (OSStatus) loadSoundBankFromURL: (NSURL *) presetURL {
     /*
@@ -349,7 +448,7 @@
     //bankData.bankURL = (__bridge CFURLRef)(presetURL);
     bankData.bankMSB  = kAUSampler_DefaultMelodicBankMSB;
     bankData.bankLSB  = kAUSampler_DefaultBankLSB;
-    bankData.presetID = 1;
+    bankData.presetID = 10;
     
 
     //status = CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault, (__bridge CFURLRef) presetURL, &propertyResourceData, NULL, NULL, &errorCode);
