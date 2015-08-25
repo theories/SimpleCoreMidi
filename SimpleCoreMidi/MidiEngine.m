@@ -362,6 +362,9 @@ MusicPlayer         _musicPlayer;
     
     MusicSequenceSetAUGraph(_musicSequence, self.processingGraph);
 
+    UInt32 numTracks = 0;
+    MusicSequenceGetTrackCount(_musicSequence, &numTracks);
+    NSLog(@"Numtracks in sequence: %d", numTracks);
     
     /*
      
