@@ -366,6 +366,8 @@ MusicPlayer         _musicPlayer;
     MusicSequenceGetTrackCount(_musicSequence, &numTracks);
     NSLog(@"Numtracks in sequence: %d", numTracks);
     
+    
+    
     /*
      
      // Create a new music player
@@ -621,7 +623,7 @@ MusicPlayer         _musicPlayer;
 /*!
 
  http://www.deluge.co/?q=midi-driven-animation-core-audio-objective-c
- 
+ http://sound.stackexchange.com/a/24233
 */
 
 
