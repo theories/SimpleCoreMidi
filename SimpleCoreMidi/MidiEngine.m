@@ -158,6 +158,14 @@ MusicPlayer         _musicPlayer;
     OSStatus result = noErr;
     AUNode samplerNode, ioNode;
     
+    //Instantiate Audio processing graph
+    result = NewAUGraph(&_processingGraph);
+    if(result != noErr){
+        NSLog(@"Could not create AUGraph!");
+        return NO;
+    }
+
+    
     //common audio component description object
     AudioComponentDescription cd = {};
     cd.componentManufacturer    = kAudioUnitManufacturer_Apple;
@@ -168,12 +176,6 @@ MusicPlayer         _musicPlayer;
     cd.componentType            = kAudioUnitType_MusicDevice;
     cd.componentSubType         = kAudioUnitSubType_Sampler;
     
-    //Instantiate Audio processing graph
-    result = NewAUGraph(&_processingGraph);
-    if(result != noErr){
-        NSLog(@"Could not create AUGraph!");
-        return NO;
-    }
     
     //add sampler unit node to the graph
     result = AUGraphAddNode(self.processingGraph, &cd, &samplerNode);
@@ -599,6 +601,38 @@ MusicPlayer         _musicPlayer;
 
 #pragma mark steps for implementing Midi playback in iOS
 
+/*!
+ create audio session
+	set sample rate
+	Activate the session
+	extract actual sample rate from session
+ create AuGraph (aka processing graph)
+	contains ioNode and sampleNode
+	connect nodes
+	extract ioUnit and samplerUnit from respective nodes
+ ConfigureAuGraph
+	initialize ioUnit and samplerUnit
+ ActivateAuGraph
+	Initialize AuGraph
+	Start AuGraph
+ CreateMusicSequence
+	Create a new music sequence
+	Load a midi file into it
+	Associate the Sequence with the AuGraph (aka processing graph) -- MusicSequenceSetAUGraph
+ Note: MusicSequenceSetAUGraph targets the first
+ Load a SoundBank (aka soundfont) and connect it to the SamplerUnit
+	Load a sf2 file containing instrument data
+	Associate it with the samplerUnit via AudioUnitSetProperty
+ Play the Sequence
+	Create a musicPlayer
+	Associate the MusicPlayer with the MusicSequence
+	Pre-roll the MusicPlayer
+	Start the MusicPlayer
+	
+ 
+ 
+	
+ */
 
 /*!
 
