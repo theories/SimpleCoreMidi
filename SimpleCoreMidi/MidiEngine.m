@@ -8,6 +8,15 @@
 
 #import "MidiEngine.h"
 
+/*
+C prototypes
+ */
+
+void MyMIDINotifyProc (const MIDINotification  *message, void *refCon);
+static void MyMIDIReadProc(const MIDIPacketList *pktlist,
+                           void *refCon,
+                           void *connRefCon);
+
 
 
 @interface MidiEngine() {
@@ -24,6 +33,7 @@
 
 MusicSequence       _musicSequence;
 MusicPlayer         _musicPlayer;
+MIDIEndpointRef     _virtualEndpoint;
 
 @synthesize processingGraph     = _processingGraph;
 @synthesize samplerUnit         = _samplerUnit;
@@ -65,11 +75,17 @@ MusicPlayer         _musicPlayer;
         
         CAShow(self.processingGraph);
         
+        if(![self createVirtualMidiRef]){
+            NSLog(@"Error Creating Virtual Midi Endpoint");
+            return nil;
+        }
+        
         if(![self createMusicSequence]){
             NSLog(@"Error creating Music Sequence!");
             return nil;
         }
         
+  
         if(![self loadSoundBank]){
             NSLog(@"Error creating Music Player!");
             return nil;
@@ -362,8 +378,11 @@ MusicPlayer         _musicPlayer;
         return NO;
     }
     
-    MusicSequenceSetAUGraph(_musicSequence, self.processingGraph);
+    //MusicSequenceSetAUGraph(_musicSequence, self.processingGraph);
+    MusicSequenceSetMIDIEndpoint(_musicSequence, _virtualEndpoint);
 
+
+    
     UInt32 numTracks = 0;
     MusicSequenceGetTrackCount(_musicSequence, &numTracks);
     NSLog(@"Numtracks in sequence: %d", numTracks);
@@ -390,6 +409,33 @@ MusicPlayer         _musicPlayer;
     
     return YES;
     
+}
+
+- (BOOL)createVirtualMidiRef{
+    
+    OSStatus result = noErr;
+    
+    // Create a client
+    MIDIClientRef virtualMidi;
+    result = MIDIClientCreate(CFSTR("Virtual Client"),
+                              MyMIDINotifyProc,
+                              NULL,
+                              &virtualMidi);
+    
+    NSAssert( result == noErr, @"MIDIClientCreate failed. Error code: %d '%.4s'", (int) result, (const char *)&result);
+    
+    // Create an endpoint
+    //MIDIEndpointRef virtualEndpoint;
+    result = MIDIDestinationCreate(virtualMidi, CFSTR("Virtual Destination"), MyMIDIReadProc, self.samplerUnit, &_virtualEndpoint);
+    
+    if( result != noErr){
+        NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:result userInfo:nil];
+        NSLog(@"MIDIDestinationCreate failed. Error code: %d '%@'", (int) result, error);
+        return NO;
+    }
+    
+    
+    return YES;
 }
 
 - (void)playSequence{
@@ -455,7 +501,7 @@ MusicPlayer         _musicPlayer;
     //bankData.bankURL = (__bridge CFURLRef)(presetURL);
     bankData.bankMSB  = kAUSampler_DefaultMelodicBankMSB;
     bankData.bankLSB  = kAUSampler_DefaultBankLSB;
-    bankData.presetID = 10;
+    bankData.presetID = 2;
     
 
     //status = CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault, (__bridge CFURLRef) presetURL, &propertyResourceData, NULL, NULL, &errorCode);
@@ -501,6 +547,108 @@ MusicPlayer         _musicPlayer;
     
     return result;
 }
+
+
+
+#pragma mark C functions for midi notifications
+
+// Get general midi notifications
+void MyMIDINotifyProc (const MIDINotification  *message, void *refCon) {
+    printf("MIDI Notify, messageId=%d,", message->messageID);
+}
+
+// Get the MIDI messages as they're sent
+static void MyMIDIReadProc(const MIDIPacketList *pktlist,
+                           void *refCon,
+                           void *connRefCon) {
+    
+    // Cast our Sampler unit back to an audio unit
+    //AudioUnit player = (AudioUnit) &refCon;
+    AudioUnit *player = (AudioUnit*) refCon;
+    MIDIPacket *packet = (MIDIPacket *)pktlist->packet;
+    for (int i=0; i < pktlist->numPackets; i++) {
+        Byte midiStatus = packet->data[0];
+        Byte midiCommand = midiStatus >> 4;
+        
+        
+        BOOL isNote = NO;
+        
+        
+        // If the command is note-on
+        if ((midiCommand == 0x09) ||
+            (midiCommand == 0x08)) {
+            
+            isNote = YES;
+            
+            
+            Byte note = packet->data[1] & 0x7F;
+            Byte velocity = packet->data[2] & 0x7F;
+            
+            
+            // Log the note letter in a readable format
+            int noteNumber = ((int) note) % 12;
+            NSString *noteType;
+            switch (noteNumber) {
+                case 0:
+                    noteType = @"C";
+                    break;
+                case 1:
+                    noteType = @"C#";
+                    break;
+                case 2:
+                    noteType = @"D";
+                    break;
+                case 3:
+                    noteType = @"D#";
+                    break;
+                case 4:
+                    noteType = @"E";
+                    break;
+                case 5:
+                    noteType = @"F";
+                    break;
+                case 6:
+                    noteType = @"F#";
+                    break;
+                case 7:
+                    noteType = @"G";
+                    break;
+                case 8:
+                    noteType = @"G#";
+                    break;
+                case 9:
+                    noteType = @"A";
+                    break;
+                case 10:
+                    noteType = @"Bb";
+                    break;
+                case 11:
+                    noteType = @"B";
+                    break;
+                default:
+                    break;
+            }
+            
+            if(isNote)
+            {
+                NSLog(@"Note type: %@, note number: %d", noteType, noteNumber);
+                
+                // Use MusicDeviceMIDIEvent to send our MIDI message to the sampler to be played
+                OSStatus result = noErr;
+                result = MusicDeviceMIDIEvent((AudioUnit)player, midiStatus, note, velocity, 0);
+                if(result != noErr){
+                    NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:result userInfo:nil];
+                    NSLog(@"MIDIDestinationCreate failed. Error code: %d '%@'", (int) result, error);
+                    
+                }
+            }
+        }
+        packet = MIDIPacketNext(packet);
+    }
+}
+
+
+#pragma mark end C functions for midi notifications
 
 
 
