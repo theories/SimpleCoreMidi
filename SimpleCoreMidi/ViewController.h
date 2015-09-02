@@ -14,5 +14,9 @@
     MidiEngine *_midiEngine;
 }
 
+- (IBAction) playSequence:(id)sender;
+- (IBAction) stopSequence:(id)sender;
+
+
 @end
 

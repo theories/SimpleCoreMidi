@@ -12,6 +12,14 @@
 C prototypes
  */
 
+#pragma mark - state struct
+typedef struct MyMIDIPlayer {
+    AUGraph		graph;
+    AudioUnit	instrumentUnit;
+    MusicPlayer musicPlayer;
+} MyMIDIPlayer;
+
+
 void MyMIDINotifyProc (const MIDINotification  *message, void *refCon);
 static void MyMIDIReadProc(const MIDIPacketList *pktlist,
                            void *refCon,
@@ -91,7 +99,7 @@ MIDIEndpointRef     _virtualEndpoint;
             return nil;
         }
         
-        [self playSequence];
+        //[self playSequence];
         
     }
     
@@ -440,6 +448,8 @@ MIDIEndpointRef     _virtualEndpoint;
 
 - (void)playSequence{
     
+    OSStatus result;
+    
     if(!_musicPlayer){
         NewMusicPlayer(&(_musicPlayer));
         
@@ -449,6 +459,11 @@ MIDIEndpointRef     _virtualEndpoint;
         MusicPlayerSetSequence(_musicPlayer, _musicSequence);
     }
     
+    
+    MusicTimeStamp currTime;
+    result = MusicPlayerGetTime(_musicPlayer, &currTime);
+    NSLog(@"Current time before play: %f", currTime);
+    
     Boolean isPlaying;
     MusicPlayerIsPlaying(_musicPlayer, &isPlaying);
     if(!isPlaying){
@@ -456,8 +471,56 @@ MIDIEndpointRef     _virtualEndpoint;
         MusicPlayerStart(_musicPlayer);
     }
     
+    
+    result = MusicPlayerGetTime(_musicPlayer, &currTime);
+    NSLog(@"Current time after play: %f", currTime);
+    
+    
 }
 
+- (void)stopSequence{
+    if (!_musicPlayer)
+        return;
+    
+    OSStatus disposeResult;
+    
+    
+    Boolean isPlaying;
+    MusicPlayerIsPlaying(_musicPlayer, &isPlaying);
+    if (isPlaying) {
+        //MusicPlayerStop(_musicPlayer);
+        
+        OSStatus result = noErr;
+        
+        result = MusicPlayerStop(_musicPlayer);
+        /*
+        UInt32 trackCount;
+        MusicSequenceGetTrackCount(_musicSequence, &trackCount);
+        
+        NSLog(@"Numtracks to dispose: %d", trackCount);
+        MusicTrack track;
+        for(int i=0;i<trackCount;i++)
+        {
+            MusicSequenceGetIndTrack (_musicSequence, i, &track);
+            result = MusicSequenceDisposeTrack(_musicSequence, track);
+        }
+        */
+        
+        MusicTimeStamp currTime;
+        result = MusicPlayerGetTime(_musicPlayer, &currTime);
+        NSLog(@"Current time after stop: %f", currTime);
+        
+        MusicPlayerSetTime(_musicPlayer, 0);
+        MusicPlayerSetSequence(_musicPlayer, nil);
+        disposeResult = DisposeMusicPlayer(_musicPlayer);
+        if (disposeResult == noErr) {
+            _musicPlayer = nil;
+        }
+       
+        //result = DisposeMusicSequence(_musicSequence);
+        //result = DisposeAUGraph(_processingGraph);
+    }
+}
 
 
 - (BOOL) loadSoundBank{
@@ -550,6 +613,7 @@ MIDIEndpointRef     _virtualEndpoint;
 
 
 
+
 #pragma mark C functions for midi notifications
 
 // Get general midi notifications
@@ -631,7 +695,7 @@ static void MyMIDIReadProc(const MIDIPacketList *pktlist,
             
             if(isNote)
             {
-                NSLog(@"Note type: %@, note number: %d", noteType, noteNumber);
+                //NSLog(@"Note type: %@, note number: %d", noteType, noteNumber);
                 
                 // Use MusicDeviceMIDIEvent to send our MIDI message to the sampler to be played
                 OSStatus result = noErr;

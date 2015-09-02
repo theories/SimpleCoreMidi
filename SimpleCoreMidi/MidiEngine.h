@@ -40,6 +40,8 @@
 
 @property (weak) id<MidiEngineDelegate> delegate;
 
+- (void)playSequence;
+- (void)stopSequence;
 
 - (void)handleInterruption:(NSNotification *)notification;
 - (void)handleRouteChange:(NSNotification *)notification;

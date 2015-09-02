@@ -34,4 +34,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+#pragma mark UI methods
+
+
+- (IBAction)playSequence:(id)sender{
+    [_midiEngine playSequence];
+}
+
+- (IBAction)stopSequence:(id)sender{
+    [_midiEngine stopSequence];
+}
+
+
 @end
