@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FGc-QW-Zdp">
-                                <rect key="frame" x="247" y="128" width="107" height="30"/>
+                                <rect key="frame" x="150" y="128" width="107" height="30"/>
                                 <state key="normal" title="Start Sequence">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -26,7 +26,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8TJ-ji-WMR">
-                                <rect key="frame" x="247" y="194" width="106" height="30"/>
+                                <rect key="frame" x="150" y="204" width="106" height="30"/>
                                 <state key="normal" title="Stop Sequence">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -34,9 +34,23 @@
                                     <action selector="stopSequence:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4LZ-dm-PVp"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7o8-Hr-Zrl">
+                                <rect key="frame" x="139" y="166" width="129" height="30"/>
+                                <state key="normal" title="Resume Sequence">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resumeSequence:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KZW-O3-Dyq"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="playButton" destination="FGc-QW-Zdp" id="8XM-iw-NkI"/>
+                        <outlet property="resumeButton" destination="7o8-Hr-Zrl" id="ZB8-01-fdu"/>
+                        <outlet property="stopButton" destination="8TJ-ji-WMR" id="ljH-Gd-6pD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

@@ -27,6 +27,10 @@
         NSLog(@"Failed to initialize midi engine");
     }
     
+    [_playButton setEnabled:YES];
+    [_stopButton setEnabled:NO];
+    [_resumeButton setEnabled:NO];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,11 +43,24 @@
 
 
 - (IBAction)playSequence:(id)sender{
+    [_playButton setEnabled:NO];
+    [_stopButton setEnabled:YES];
+    [_resumeButton setEnabled:NO];
     [_midiEngine playSequence];
 }
 
 - (IBAction)stopSequence:(id)sender{
+    [_stopButton setEnabled:NO];
+    [_resumeButton setEnabled:YES];
+    [_playButton setEnabled:YES];
     [_midiEngine stopSequence];
+}
+
+- (IBAction)resumeSequence:(id)sender{
+    [_resumeButton setEnabled:NO];
+    [_playButton setEnabled:NO];
+    [_stopButton setEnabled:YES];
+    [_midiEngine resumeSequence];
 }
 
 

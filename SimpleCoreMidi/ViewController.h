@@ -14,9 +14,13 @@
     MidiEngine *_midiEngine;
 }
 
+@property (unsafe_unretained, nonatomic) IBOutlet UIButton *playButton;
+@property (unsafe_unretained, nonatomic) IBOutlet UIButton *stopButton;
+@property (unsafe_unretained, nonatomic) IBOutlet UIButton *resumeButton;
+
 - (IBAction) playSequence:(id)sender;
 - (IBAction) stopSequence:(id)sender;
-
+- (IBAction) resumeSequence:(id)sender;
 
 @end
 

@@ -42,6 +42,7 @@
 
 - (void)playSequence;
 - (void)stopSequence;
+- (void)resumeSequence;
 
 - (void)handleInterruption:(NSNotification *)notification;
 - (void)handleRouteChange:(NSNotification *)notification;

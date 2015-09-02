@@ -478,11 +478,41 @@ MIDIEndpointRef     _virtualEndpoint;
     
 }
 
+
+- (void)resumeSequence{
+    
+    OSStatus result;
+    
+    if(!_musicPlayer){
+        return;
+    }
+    
+    
+    MusicTimeStamp currTime;
+    result = MusicPlayerGetTime(_musicPlayer, &currTime);
+    NSLog(@"Current time before play: %f", currTime);
+    
+    Boolean isPlaying;
+    MusicPlayerIsPlaying(_musicPlayer, &isPlaying);
+    if(!isPlaying){
+        MusicPlayerPreroll(_musicPlayer);
+        MusicPlayerStart(_musicPlayer);
+    }
+    
+    
+    result = MusicPlayerGetTime(_musicPlayer, &currTime);
+    NSLog(@"Current time after play: %f", currTime);
+    
+    
+}
+
+
+
 - (void)stopSequence{
     if (!_musicPlayer)
         return;
     
-    OSStatus disposeResult;
+    //OSStatus disposeResult;
     
     
     Boolean isPlaying;
@@ -510,12 +540,14 @@ MIDIEndpointRef     _virtualEndpoint;
         result = MusicPlayerGetTime(_musicPlayer, &currTime);
         NSLog(@"Current time after stop: %f", currTime);
         
+        /*
         MusicPlayerSetTime(_musicPlayer, 0);
         MusicPlayerSetSequence(_musicPlayer, nil);
         disposeResult = DisposeMusicPlayer(_musicPlayer);
         if (disposeResult == noErr) {
             _musicPlayer = nil;
         }
+         */
        
         //result = DisposeMusicSequence(_musicSequence);
         //result = DisposeAUGraph(_processingGraph);
