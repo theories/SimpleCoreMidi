@@ -33,10 +33,13 @@
 
 @interface MidiEngine : NSObject
 
-@property (readwrite) AUGraph   processingGraph;
-@property (readwrite) AudioUnit samplerUnit;
-@property (readwrite) AudioUnit ioUnit;
-@property (readwrite) Float64   graphSampleRate;
+@property (readwrite) AUGraph       processingGraph;
+@property (readwrite) AudioUnit     samplerUnit;
+@property (readwrite) AudioUnit     ioUnit;
+@property (readwrite) Float64       graphSampleRate;
+@property (readwrite) MusicSequence musicSequence;
+@property (readwrite) MusicPlayer   musicPlayer;
+
 
 @property (weak) id<MidiEngineDelegate> delegate;
 

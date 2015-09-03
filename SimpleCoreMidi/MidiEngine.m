@@ -39,16 +39,16 @@ static void MyMIDIReadProc(const MIDIPacketList *pktlist,
 @implementation MidiEngine
 
 
-MusicSequence       _musicSequence;
-MusicPlayer         _musicPlayer;
+//MusicSequence       _musicSequence;
+//MusicPlayer         _musicPlayer;
 MIDIEndpointRef     _virtualEndpoint;
 
 @synthesize processingGraph     = _processingGraph;
 @synthesize samplerUnit         = _samplerUnit;
 @synthesize ioUnit              = _ioUnit;
 @synthesize graphSampleRate     = _graphSampleRate;
-
-
+@synthesize musicSequence       = _musicSequence;
+@synthesize musicPlayer         = _musicPlayer;
 
 
 - (instancetype)init
@@ -109,6 +109,48 @@ MIDIEndpointRef     _virtualEndpoint;
 
 }
 
+- (void)destroy{
+    
+    OSStatus result = noErr;
+    
+    if(self.musicPlayer){
+        
+        result = MusicPlayerStop(self.musicPlayer);
+        
+        UInt32 trackCount;
+        MusicSequenceGetTrackCount(_musicSequence, &trackCount);
+         
+        NSLog(@"Numtracks to dispose: %d", trackCount);
+        MusicTrack track;
+        for(int i=0;i<trackCount;i++){
+            MusicSequenceGetIndTrack (_musicSequence, i, &track);
+            result = MusicSequenceDisposeTrack(_musicSequence, track);
+        }
+        
+        MusicPlayerSetTime(self.musicPlayer, 0);
+        MusicPlayerSetSequence(self.musicPlayer, nil);
+        result = DisposeMusicPlayer(self.musicPlayer);
+        if (result == noErr) {
+            self.musicPlayer = nil;
+        }
+        else{
+            NSLog(@"Could not dispose of music player: %d", result);
+        }
+    }
+    
+    if(self.musicSequence){
+        result = DisposeMusicSequence(self.musicSequence);
+        self.musicSequence = nil;
+       
+    }
+    
+    if(self.processingGraph){
+        result = DisposeAUGraph(self.processingGraph);
+        self.processingGraph = nil;
+    }
+    
+    
+}
 
 
 #pragma mark AVAudioSession
@@ -902,6 +944,7 @@ static void MyMIDIReadProc(const MIDIPacketList *pktlist,
 
  http://www.deluge.co/?q=midi-driven-animation-core-audio-objective-c
  http://sound.stackexchange.com/a/24233
+ http://teragonaudio.com/article/How-to-do-realtime-recording-with-effect-processing-on-iOS.html
 */
 
 
