@@ -402,6 +402,8 @@ MIDIEndpointRef     _virtualEndpoint;
     NSURL *midiFileURL;
     @try {
         midiFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Bee_Gees_-_Jive_Talkin'" ofType:@"mid"]];
+        //midiFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"chet1003" ofType:@"mid"]];
+        //midiFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"chet2501" ofType:@"mid"]];
     }
     @catch (NSException *exception) {
         /*
