@@ -95,11 +95,15 @@ MIDIEndpointRef     _virtualEndpoint;
         
   
         if(![self loadSoundBank]){
-            NSLog(@"Error creating Music Player!");
+            NSLog(@"Error loading SoundBank!");
             return nil;
         }
         
-        //[self playSequence];
+        if(![self createMusicPlayer]){
+            NSLog(@"Error creating Music Player");
+            return nil;
+        }
+       
         
     }
     
@@ -490,6 +494,133 @@ MIDIEndpointRef     _virtualEndpoint;
     return YES;
 }
 
+- (BOOL)createMusicPlayer{
+    
+    OSStatus result;
+    
+    if(!_musicPlayer){
+        result = NewMusicPlayer(&(_musicPlayer));
+    }
+    
+    if(result != noErr){
+        NSLog(@"Could not create Music Player! Error code: %d '%.4s'", (int) result, (const char *)&result);
+        
+        return NO;
+    }
+    
+    MusicPlayerSetSequence(_musicPlayer, _musicSequence);
+    
+    Boolean isPlaying;
+    MusicPlayerIsPlaying(_musicPlayer, &isPlaying);
+    if(!isPlaying){
+        NSLog(@"Pre-rolling player");
+        MusicPlayerPreroll(_musicPlayer);
+      
+    }
+    
+    MusicTimeStamp currTime;
+    result = MusicPlayerGetTime(_musicPlayer, &currTime);
+    NSLog(@"Current time after pre-roll: %f", currTime);
+    
+    return YES;
+    
+}
+
+
+#pragma mark SoundBank loading methods
+
+- (BOOL) loadSoundBank{
+    
+    /*
+     NSURL *presetURL = [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:@"shakyC2" ofType:@"aupreset"]];
+     if(presetURL){
+     [self loadFromPresetURL:presetURL];
+     }
+     */
+    
+    NSURL *sbURL = [[NSBundle mainBundle] URLForResource:@"Yamaha_XG_Sound_Set" withExtension:@"sf2"];
+    if(sbURL){
+        [self loadSoundBankFromURL:sbURL];
+    }else
+        return NO;
+    
+    return YES;
+}
+
+
+
+- (OSStatus) loadSoundBankFromURL: (NSURL *) presetURL {
+    /*
+     CFDataRef propertyResourceData = 0;
+     Boolean status;
+     SInt32 errorCode = 0;
+     */
+    
+    OSStatus result = noErr;
+    
+#pragma TODO: CFURLCreateDataAndPropertiesFromResource is DEPRECATED
+    /*
+     TODO: CFURLCreateDataAndPropertiesFromResource is deprecated
+     */
+    
+    
+    AUSamplerInstrumentData bankData;
+    bankData.instrumentType = kInstrumentType_SF2Preset;
+    bankData.fileURL = (__bridge CFURLRef)(presetURL);
+    //bankData.bankURL = (__bridge CFURLRef)(presetURL);
+    bankData.bankMSB  = kAUSampler_DefaultMelodicBankMSB;
+    bankData.bankLSB  = kAUSampler_DefaultBankLSB;
+    bankData.presetID = 2;
+    
+    
+    //status = CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault, (__bridge CFURLRef) presetURL, &propertyResourceData, NULL, NULL, &errorCode);
+    //CFURLCopyResourcePropertiesForKeys(
+    
+    /*
+     if(!(status == YES) && !(propertyResourceData != 0)){
+     NSLog(@"Could not create data from presetURL! Error code: %d '%.4s'", (int) errorCode, (const char *)&errorCode);
+     return errorCode;
+     }
+     
+     // Convert the data object into a property list
+     CFPropertyListRef presetPropertyList = 0;
+     CFPropertyListFormat dataFormat = 0;
+     CFErrorRef errorRef = 0;
+     
+     presetPropertyList = CFPropertyListCreateWithData(kCFAllocatorDefault, propertyResourceData, kCFPropertyListImmutable, &dataFormat, &errorRef);
+     
+     if(presetPropertyList != 0){
+     result = AudioUnitSetProperty(self.samplerUnit, kAudioUnitProperty_ClassInfo, kAudioUnitScope_Global, 0, &presetPropertyList, sizeof(CFPropertyListRef));
+     CFRelease(presetPropertyList);
+     }
+     */
+    
+    // set the kAUSamplerProperty_LoadPresetFromBank property
+    result = AudioUnitSetProperty(self.samplerUnit,
+                                  kAUSamplerProperty_LoadInstrument,
+                                  kAudioUnitScope_Global,
+                                  0,
+                                  &bankData,
+                                  sizeof(bankData));
+    
+    /*
+     if(errorRef) CFRelease(errorRef);
+     CFRelease(propertyResourceData);
+     */
+    
+    // check for errors
+    NSCAssert (result == noErr,
+               @"Unable to set the preset property on the Sampler. Error code:%d '%.4s'",
+               (int) result,
+               (const char *)&result);
+    
+    return result;
+}
+
+
+
+#pragma mark Playback Methods
+
 - (void)playSequence{
     
     OSStatus result;
@@ -523,6 +654,8 @@ MIDIEndpointRef     _virtualEndpoint;
 }
 
 
+
+
 - (void)resumeSequence{
     
     OSStatus result;
@@ -539,7 +672,6 @@ MIDIEndpointRef     _virtualEndpoint;
     Boolean isPlaying;
     MusicPlayerIsPlaying(_musicPlayer, &isPlaying);
     if(!isPlaying){
-        MusicPlayerPreroll(_musicPlayer);
         MusicPlayerStart(_musicPlayer);
     }
     
@@ -596,95 +728,6 @@ MIDIEndpointRef     _virtualEndpoint;
         //result = DisposeMusicSequence(_musicSequence);
         //result = DisposeAUGraph(_processingGraph);
     }
-}
-
-
-- (BOOL) loadSoundBank{
-    
-    /*
-    NSURL *presetURL = [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:@"shakyC2" ofType:@"aupreset"]];
-    if(presetURL){
-        [self loadFromPresetURL:presetURL];
-    }
-    */
-    
-    NSURL *sbURL = [[NSBundle mainBundle] URLForResource:@"Yamaha_XG_Sound_Set" withExtension:@"sf2"];
-    if(sbURL){
-        [self loadSoundBankFromURL:sbURL];
-    }else
-        return NO;
-    
-    return YES;
-}
-
-
-
-- (OSStatus) loadSoundBankFromURL: (NSURL *) presetURL {
-    /*
-    CFDataRef propertyResourceData = 0;
-    Boolean status;
-    SInt32 errorCode = 0;
-    */
-    
-    OSStatus result = noErr;
-    
-#pragma TODO: CFURLCreateDataAndPropertiesFromResource is DEPRECATED
-    /*
-     TODO: CFURLCreateDataAndPropertiesFromResource is deprecated
-     */
-    
-    
-    AUSamplerInstrumentData bankData;
-    bankData.instrumentType = kInstrumentType_SF2Preset;
-    bankData.fileURL = (__bridge CFURLRef)(presetURL);
-    //bankData.bankURL = (__bridge CFURLRef)(presetURL);
-    bankData.bankMSB  = kAUSampler_DefaultMelodicBankMSB;
-    bankData.bankLSB  = kAUSampler_DefaultBankLSB;
-    bankData.presetID = 2;
-    
-
-    //status = CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault, (__bridge CFURLRef) presetURL, &propertyResourceData, NULL, NULL, &errorCode);
-    //CFURLCopyResourcePropertiesForKeys(
-    
-    /*
-    if(!(status == YES) && !(propertyResourceData != 0)){
-        NSLog(@"Could not create data from presetURL! Error code: %d '%.4s'", (int) errorCode, (const char *)&errorCode);
-        return errorCode;
-    }
-    
-    // Convert the data object into a property list
-    CFPropertyListRef presetPropertyList = 0;
-    CFPropertyListFormat dataFormat = 0;
-    CFErrorRef errorRef = 0;
-    
-    presetPropertyList = CFPropertyListCreateWithData(kCFAllocatorDefault, propertyResourceData, kCFPropertyListImmutable, &dataFormat, &errorRef);
-    
-    if(presetPropertyList != 0){
-        result = AudioUnitSetProperty(self.samplerUnit, kAudioUnitProperty_ClassInfo, kAudioUnitScope_Global, 0, &presetPropertyList, sizeof(CFPropertyListRef));
-        CFRelease(presetPropertyList);
-    }
-    */
-    
-    // set the kAUSamplerProperty_LoadPresetFromBank property
-    result = AudioUnitSetProperty(self.samplerUnit,
-                                  kAUSamplerProperty_LoadInstrument,
-                                  kAudioUnitScope_Global,
-                                  0,
-                                  &bankData,
-                                  sizeof(bankData));
-    
-    /*
-    if(errorRef) CFRelease(errorRef);
-    CFRelease(propertyResourceData);
-    */
-    
-    // check for errors
-    NSCAssert (result == noErr,
-               @"Unable to set the preset property on the Sampler. Error code:%d '%.4s'",
-               (int) result,
-               (const char *)&result);
-    
-    return result;
 }
 
 
