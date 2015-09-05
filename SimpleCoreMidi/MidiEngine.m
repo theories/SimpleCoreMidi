@@ -558,19 +558,13 @@ MIDIEndpointRef     _virtualEndpoint;
     
     OSStatus result = noErr;
     
-#pragma TODO: CFURLCreateDataAndPropertiesFromResource is DEPRECATED
-    /*
-     TODO: CFURLCreateDataAndPropertiesFromResource is deprecated
-     */
-    
-    
     AUSamplerInstrumentData bankData;
     bankData.instrumentType = kInstrumentType_SF2Preset;
     bankData.fileURL = (__bridge CFURLRef)(presetURL);
     //bankData.bankURL = (__bridge CFURLRef)(presetURL);
     bankData.bankMSB  = kAUSampler_DefaultMelodicBankMSB;
     bankData.bankLSB  = kAUSampler_DefaultBankLSB;
-    bankData.presetID = 2;
+    bankData.presetID = 0;
     
     
     //status = CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault, (__bridge CFURLRef) presetURL, &propertyResourceData, NULL, NULL, &errorCode);
