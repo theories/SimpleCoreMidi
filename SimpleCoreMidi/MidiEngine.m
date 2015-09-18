@@ -557,7 +557,7 @@ MIDIEndpointRef     _virtualEndpoint;
      */
     
     OSStatus result = noErr;
-    
+    /*
     AUSamplerInstrumentData bankData;
     bankData.instrumentType = kInstrumentType_SF2Preset;
     bankData.fileURL = (__bridge CFURLRef)(presetURL);
@@ -565,7 +565,20 @@ MIDIEndpointRef     _virtualEndpoint;
     bankData.bankMSB  = kAUSampler_DefaultMelodicBankMSB;
     bankData.bankLSB  = kAUSampler_DefaultBankLSB;
     bankData.presetID = 0;
+    */
     
+    NSURL *instURL = [[NSBundle mainBundle] URLForResource:@"bing" withExtension:@"caf"];
+    
+    NSArray *arrFiles = [NSArray arrayWithObjects:instURL, nil];
+    CFArrayRef urlArrayRef = (__bridge CFArrayRef) arrFiles;
+    
+    result = AudioUnitSetProperty(
+                                         self.samplerUnit,
+                                         kAUSamplerProperty_LoadAudioFiles,
+                                         kAudioUnitScope_Global,
+                                         0,
+                                         &urlArrayRef,
+                                         sizeof(urlArrayRef));
     
     //status = CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault, (__bridge CFURLRef) presetURL, &propertyResourceData, NULL, NULL, &errorCode);
     //CFURLCopyResourcePropertiesForKeys(
@@ -589,6 +602,7 @@ MIDIEndpointRef     _virtualEndpoint;
      }
      */
     
+    /*
     // set the kAUSamplerProperty_LoadPresetFromBank property
     result = AudioUnitSetProperty(self.samplerUnit,
                                   kAUSamplerProperty_LoadInstrument,
@@ -596,7 +610,7 @@ MIDIEndpointRef     _virtualEndpoint;
                                   0,
                                   &bankData,
                                   sizeof(bankData));
-    
+    */
     /*
      if(errorRef) CFRelease(errorRef);
      CFRelease(propertyResourceData);
@@ -984,6 +998,8 @@ static void MyMIDIReadProc(const MIDIPacketList *pktlist,
  http://www.deluge.co/?q=midi-driven-animation-core-audio-objective-c
  http://sound.stackexchange.com/a/24233
  http://teragonaudio.com/article/How-to-do-realtime-recording-with-effect-processing-on-iOS.html
+ http://www.electricpeelsoftware.com/2013/02/22/creating-aupreset-files.html
+ http://bit.ly/1KqyBev
 */
 
 

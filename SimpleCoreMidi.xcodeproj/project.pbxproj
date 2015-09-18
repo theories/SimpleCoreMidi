@@ -26,6 +26,8 @@
 		E4B643261B83725A00A1E76D /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B643251B83725A00A1E76D /* CoreMIDI.framework */; };
 		E4E036361B895F3600E7FA73 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E036351B895F3600E7FA73 /* Accelerate.framework */; };
 		E4E036381B8962A700E7FA73 /* Bee_Gees_-_Jive_Talkin'.mid in Resources */ = {isa = PBXBuildFile; fileRef = E4E036371B8962A700E7FA73 /* Bee_Gees_-_Jive_Talkin'.mid */; };
+		E4E19D601BAC4E3700A71641 /* bing.caf in Resources */ = {isa = PBXBuildFile; fileRef = E4E19D5F1BAC4E3700A71641 /* bing.caf */; };
+		E4E19D611BAC4E3700A71641 /* bing.caf in Resources */ = {isa = PBXBuildFile; fileRef = E4E19D5F1BAC4E3700A71641 /* bing.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,7 @@
 		E4B643271B8372CC00A1E76D /* MidiEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MidiEngine.h; sourceTree = "<group>"; };
 		E4E036351B895F3600E7FA73 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E4E036371B8962A700E7FA73 /* Bee_Gees_-_Jive_Talkin'.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; name = "Bee_Gees_-_Jive_Talkin'.mid"; path = "sound/Bee_Gees_-_Jive_Talkin'.mid"; sourceTree = "<group>"; };
+		E4E19D5F1BAC4E3700A71641 /* bing.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = bing.caf; path = sound/bing.caf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +93,7 @@
 		E46E972C1B855EF1003349FB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E4E19D5F1BAC4E3700A71641 /* bing.caf */,
 				E4ABCAD51B99E28400D09CCB /* chet2501.mid */,
 				E4ABCAD21B99E21300D09CCB /* chet1003.mid */,
 				E4E036371B8962A700E7FA73 /* Bee_Gees_-_Jive_Talkin'.mid */,
@@ -246,6 +250,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4E19D601BAC4E3700A71641 /* bing.caf in Resources */,
 				E4B643021B8370B500A1E76D /* Main.storyboard in Resources */,
 				E4ABCAD61B99E28400D09CCB /* chet2501.mid in Resources */,
 				E4768C531B865B3100879B8E /* Yamaha_XG_Sound_Set.sf2 in Resources */,
@@ -260,6 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4E19D611BAC4E3700A71641 /* bing.caf in Resources */,
 				E4ABCAD71B99E28400D09CCB /* chet2501.mid in Resources */,
 				E4ABCAD41B99E21300D09CCB /* chet1003.mid in Resources */,
 			);
