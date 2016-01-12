@@ -94,10 +94,17 @@ MIDIEndpointRef     _virtualEndpoint;
         }
         
   
+        if(![self loadSoundSamples]){
+            NSLog(@"Error loading SoundBank!");
+            return nil;
+        }
+        
+        /*
         if(![self loadSoundBank]){
             NSLog(@"Error loading SoundBank!");
             return nil;
         }
+         */
         
         if(![self createMusicPlayer]){
             NSLog(@"Error creating Music Player");
@@ -624,6 +631,42 @@ MIDIEndpointRef     _virtualEndpoint;
     
     return result;
 }
+
+
+
+- (BOOL) loadSoundSamples{
+    
+    OSStatus result = noErr;
+    
+    NSURL *instURL = [[NSBundle mainBundle] URLForResource:@"bing" withExtension:@"caf"];
+    
+    NSArray *arrFiles = [NSArray arrayWithObjects:instURL, nil];
+    CFArrayRef urlArrayRef = (__bridge CFArrayRef) arrFiles;
+    
+    result = AudioUnitSetProperty(
+                                  self.samplerUnit,
+                                  kAUSamplerProperty_LoadAudioFiles,
+                                  kAudioUnitScope_Global,
+                                  0,
+                                  &urlArrayRef,
+                                  sizeof(urlArrayRef));
+    
+    
+    
+    // check for errors
+    NSCAssert (result == noErr,
+               @"Unable to set the preset property on the Sampler. Error code:%d '%.4s'",
+               (int) result,
+               (const char *)&result);
+    
+    if(result == noErr){
+        return YES;
+    }
+    
+    NSLog(@"Unable to set preset property on the Sampler: %d", (int)result);
+    return NO;
+}
+
 
 
 
