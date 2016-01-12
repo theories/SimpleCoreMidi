@@ -94,17 +94,19 @@ MIDIEndpointRef     _virtualEndpoint;
         }
         
   
+        /*
         if(![self loadSoundSamples]){
             NSLog(@"Error loading SoundBank!");
             return nil;
         }
+         */
         
-        /*
+        
         if(![self loadSoundBank]){
             NSLog(@"Error loading SoundBank!");
             return nil;
         }
-         */
+        
         
         if(![self createMusicPlayer]){
             NSLog(@"Error creating Music Player");
@@ -546,12 +548,18 @@ MIDIEndpointRef     _virtualEndpoint;
      */
     
     NSURL *sbURL = [[NSBundle mainBundle] URLForResource:@"Yamaha_XG_Sound_Set" withExtension:@"sf2"];
-    if(sbURL){
-        [self loadSoundBankFromURL:sbURL];
-    }else
+    if(!sbURL){
         return NO;
+    }
     
-    return YES;
+    OSStatus result;
+    result = [self loadSoundBankFromURL:sbURL];
+    if (result == noErr) {
+        return YES;
+    }
+    
+    return NO;
+    
 }
 
 
@@ -564,7 +572,7 @@ MIDIEndpointRef     _virtualEndpoint;
      */
     
     OSStatus result = noErr;
-    /*
+    
     AUSamplerInstrumentData bankData;
     bankData.instrumentType = kInstrumentType_SF2Preset;
     bankData.fileURL = (__bridge CFURLRef)(presetURL);
@@ -572,20 +580,6 @@ MIDIEndpointRef     _virtualEndpoint;
     bankData.bankMSB  = kAUSampler_DefaultMelodicBankMSB;
     bankData.bankLSB  = kAUSampler_DefaultBankLSB;
     bankData.presetID = 0;
-    */
-    
-    NSURL *instURL = [[NSBundle mainBundle] URLForResource:@"bing" withExtension:@"caf"];
-    
-    NSArray *arrFiles = [NSArray arrayWithObjects:instURL, nil];
-    CFArrayRef urlArrayRef = (__bridge CFArrayRef) arrFiles;
-    
-    result = AudioUnitSetProperty(
-                                         self.samplerUnit,
-                                         kAUSamplerProperty_LoadAudioFiles,
-                                         kAudioUnitScope_Global,
-                                         0,
-                                         &urlArrayRef,
-                                         sizeof(urlArrayRef));
     
     //status = CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault, (__bridge CFURLRef) presetURL, &propertyResourceData, NULL, NULL, &errorCode);
     //CFURLCopyResourcePropertiesForKeys(
@@ -609,7 +603,6 @@ MIDIEndpointRef     _virtualEndpoint;
      }
      */
     
-    /*
     // set the kAUSamplerProperty_LoadPresetFromBank property
     result = AudioUnitSetProperty(self.samplerUnit,
                                   kAUSamplerProperty_LoadInstrument,
@@ -617,7 +610,6 @@ MIDIEndpointRef     _virtualEndpoint;
                                   0,
                                   &bankData,
                                   sizeof(bankData));
-    */
     /*
      if(errorRef) CFRelease(errorRef);
      CFRelease(propertyResourceData);
