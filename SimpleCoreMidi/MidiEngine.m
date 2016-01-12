@@ -132,7 +132,7 @@ MIDIEndpointRef     _virtualEndpoint;
         }
         
         MusicPlayerSetTime(self.musicPlayer, 0);
-        MusicPlayerSetSequence(self.musicPlayer, nil);
+        //MusicPlayerSetSequence(self.musicPlayer, nil);
         result = DisposeMusicPlayer(self.musicPlayer);
         if (result == noErr) {
             self.musicPlayer = nil;
