@@ -17,15 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FGc-QW-Zdp">
-                                <rect key="frame" x="150" y="128" width="107" height="30"/>
-                                <state key="normal" title="Start Sequence">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="playSequence:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HZh-rt-uVm"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8TJ-ji-WMR">
                                 <rect key="frame" x="150" y="204" width="106" height="30"/>
                                 <state key="normal" title="Stop Sequence">
@@ -42,6 +33,15 @@
                                 </state>
                                 <connections>
                                     <action selector="resumeSequence:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KZW-O3-Dyq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FGc-QW-Zdp">
+                                <rect key="frame" x="150" y="128" width="107" height="30"/>
+                                <state key="normal" title="Start Sequence">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playSequence:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HZh-rt-uVm"/>
                                 </connections>
                             </button>
                         </subviews>

@@ -94,18 +94,19 @@ MIDIEndpointRef     _virtualEndpoint;
         }
         
   
-        /*
+        
         if(![self loadSoundSamples]){
             NSLog(@"Error loading SoundBank!");
             return nil;
         }
-         */
         
-        
+        /*
         if(![self loadSoundBank]){
             NSLog(@"Error loading SoundBank!");
             return nil;
         }
+         */
+         
         
         
         if(![self createMusicPlayer]){
