@@ -24,6 +24,7 @@
 		E4B643201B83720800A1E76D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B6431F1B83720800A1E76D /* AudioToolbox.framework */; };
 		E4B643241B83724E00A1E76D /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B643231B83724E00A1E76D /* CoreAudio.framework */; };
 		E4B643261B83725A00A1E76D /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B643251B83725A00A1E76D /* CoreMIDI.framework */; };
+		E4C4DB1121346CA400BADD97 /* ahhh.caf in Resources */ = {isa = PBXBuildFile; fileRef = E4C4DB1021346CA400BADD97 /* ahhh.caf */; };
 		E4E036361B895F3600E7FA73 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E036351B895F3600E7FA73 /* Accelerate.framework */; };
 		E4E036381B8962A700E7FA73 /* Bee_Gees_-_Jive_Talkin'.mid in Resources */ = {isa = PBXBuildFile; fileRef = E4E036371B8962A700E7FA73 /* Bee_Gees_-_Jive_Talkin'.mid */; };
 		E4E19D601BAC4E3700A71641 /* bing.caf in Resources */ = {isa = PBXBuildFile; fileRef = E4E19D5F1BAC4E3700A71641 /* bing.caf */; };
@@ -63,6 +64,7 @@
 		E4B643231B83724E00A1E76D /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		E4B643251B83725A00A1E76D /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		E4B643271B8372CC00A1E76D /* MidiEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MidiEngine.h; sourceTree = "<group>"; };
+		E4C4DB1021346CA400BADD97 /* ahhh.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ahhh.caf; path = sound/ahhh.caf; sourceTree = "<group>"; };
 		E4E036351B895F3600E7FA73 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E4E036371B8962A700E7FA73 /* Bee_Gees_-_Jive_Talkin'.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; name = "Bee_Gees_-_Jive_Talkin'.mid"; path = "sound/Bee_Gees_-_Jive_Talkin'.mid"; sourceTree = "<group>"; };
 		E4E19D5F1BAC4E3700A71641 /* bing.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = bing.caf; path = sound/bing.caf; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 		E46E972C1B855EF1003349FB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E4C4DB1021346CA400BADD97 /* ahhh.caf */,
 				E4E19D5F1BAC4E3700A71641 /* bing.caf */,
 				E4ABCAD51B99E28400D09CCB /* chet2501.mid */,
 				E4ABCAD21B99E21300D09CCB /* chet1003.mid */,
@@ -213,7 +216,7 @@
 		E4B642EB1B8370B500A1E76D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Thierry Sansaricq";
 				TargetAttributes = {
 					E4B642F21B8370B500A1E76D = {
@@ -250,6 +253,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4C4DB1121346CA400BADD97 /* ahhh.caf in Resources */,
 				E4E19D601BAC4E3700A71641 /* bing.caf in Resources */,
 				E4B643021B8370B500A1E76D /* Main.storyboard in Resources */,
 				E4ABCAD61B99E28400D09CCB /* chet2501.mid in Resources */,
@@ -332,13 +336,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -377,13 +391,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

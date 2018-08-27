@@ -17,7 +17,7 @@
 #import <AudioToolbox/MusicPlayer.h>
 #import <CoreAudio/CoreAudioTypes.h>
 #import <AVFoundation/AVFoundation.h>
-#import <AudioUnit/AudioUnitProperties.h>
+//#import <AudioUnit/AudioUnitProperties.h>
 #import <Accelerate/Accelerate.h>
 
 

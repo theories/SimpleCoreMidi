@@ -506,7 +506,7 @@ MIDIEndpointRef     _virtualEndpoint;
 
 - (BOOL)createMusicPlayer{
     
-    OSStatus result;
+    OSStatus result = 0;
     
     if(!_musicPlayer){
         result = NewMusicPlayer(&(_musicPlayer));
@@ -595,7 +595,7 @@ MIDIEndpointRef     _virtualEndpoint;
     
     OSStatus result = noErr;
     
-    NSURL *instURL = [[NSBundle mainBundle] URLForResource:@"bing" withExtension:@"caf"];
+    NSURL *instURL = [[NSBundle mainBundle] URLForResource:@"ahhh" withExtension:@"caf"];
     
     NSArray *arrFiles = [NSArray arrayWithObjects:instURL, nil];
     CFArrayRef urlArrayRef = (__bridge CFArrayRef) arrFiles;
